@@ -1,6 +1,6 @@
 import {
   Avatar,
-  Box,
+  Button,
   Divider,
   Flex,
   GridItem,
@@ -18,10 +18,14 @@ import { AiFillHeart } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Comment from "../Comment/Comment";
-import PostFooter from '../FeedPost/PostFooter'
+import PostFooter from "../FeedPost/PostFooter";
+import useUserProfileStore from "../../store/userProfileStore";
+import useAuthStore from "../../store/authStore";
 
-const ProfilePost = ({ img }) => {
+const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const userProfile = useUserProfileStore((state) => state.userProfile);
+  const authUser = useAuthStore((state) => state.user)
   return (
     <>
       <GridItem
@@ -51,19 +55,19 @@ const ProfilePost = ({ img }) => {
             <Flex>
               <AiFillHeart size={20} />
               <Text fontWeight={"bold"} ml={2}>
-                7
+                {post.likes.length}
               </Text>
             </Flex>
             <Flex>
               <FaComment size={20} />
               <Text fontWeight={"bold"} ml={2}>
-                7
+                {post.comments.length}
               </Text>
             </Flex>
           </Flex>
         </Flex>
         <Image
-          src={img}
+          src={post.imageURL}
           alt="profile post"
           w={"100%"}
           h={"100%"}
@@ -82,18 +86,22 @@ const ProfilePost = ({ img }) => {
           <ModalBody bg={"black"} pb={5}>
             <Flex
               gap={4}
-              w={{ dase: "90%", sm: "70%", md: "full" }}
+              w={{ base: "90%", sm: "70%", md: "full" }}
               mx={"auto"}
+              maxH={'90vh'}
+              minH={'50vh'}
             >
-              <Box
+              <Flex
                 borderRadius={4}
                 overflow={"hidden"}
                 border={"1px solid"}
                 borderColor={"whiteAlpha.300"}
                 flex={1.5}
+                justifyContent={'center'}
+                alignItems={'center'}
               >
-                <Image src={img} alt="Profile Post" />
-              </Box>
+                <Image src={post.imageURL} alt="Profile Post" />
+              </Flex>
               <Flex
                 flex={1}
                 flexDir={"column"}
@@ -101,46 +109,54 @@ const ProfilePost = ({ img }) => {
                 display={{ base: "none", md: "flex" }}
               >
                 <Flex alignItems={"center"} justifyContent={"space-between"}>
-                  <Flex alignItems={'center'} gap={4}>
+                  <Flex alignItems={"center"} gap={4}>
                     <Avatar
-                      src="/profilepic.png"
+                      src={userProfile.profilePicUrl}
                       size={"sm"}
-                      name="MeyHuSurya"
                     />
                     <Text fontWeight={"bold"} fontSize={12}>
-                      MeyHuSurya
+                      {userProfile.username}
                     </Text>
                   </Flex>
-                  <Box
+                  {authUser?.uid === userProfile.uid && (
+                    <Button
+                    size={'sm'}
+                    bg={'transparent'}
                     _hover={{ bg: "whiteAlpha.300", color: "red.600" }}
                     borderRadius={4}
                     p={1}
                   >
                     <MdDelete size={20} cursor={"pointer"} />
-                  </Box>
+                  </Button>
+                  )}
                 </Flex>
-                <Divider my={4} bg={'gray.500'} />
-                <VStack w={'full'} alignItems={'start'} maxH={'350px'} overflowY={'auto'}>
-                  <Comment 
-                    createdAt='1d ago'
-                    username='MeyHuSurya'
-                    profilePic='/profilepic.png'
-                    text={'Dummy images from unsplash'}
-                   />
-                  <Comment 
-                    createdAt='12h ago'
-                    username='abrahmov'
-                    profilePic='https://bit.ly/dan-abramov'
-                    text={'Nice Pic'}
-                   />
-                  <Comment 
-                    createdAt='1h ago'
-                    username='kentdodds'
-                    profilePic='https://bit.ly/kent-c-dodds'
-                    text={'Good Clone Dude'}
-                   />
+                <Divider my={4} bg={"gray.500"} />
+                <VStack
+                  w={"full"}
+                  alignItems={"start"}
+                  maxH={"350px"}
+                  overflowY={"auto"}
+                >
+                  <Comment
+                    createdAt="1d ago"
+                    username="MeyHuSurya"
+                    profilePic="/profilepic.png"
+                    text={"Dummy images from unsplash"}
+                  />
+                  <Comment
+                    createdAt="12h ago"
+                    username="abrahmov"
+                    profilePic="https://bit.ly/dan-abramov"
+                    text={"Nice Pic"}
+                  />
+                  <Comment
+                    createdAt="1h ago"
+                    username="kentdodds"
+                    profilePic="https://bit.ly/kent-c-dodds"
+                    text={"Good Clone Dude"}
+                  />
                 </VStack>
-                <Divider my={4} bg={'gray.800'} />
+                <Divider my={4} bg={"gray.800"} />
                 <PostFooter isProfilePage={true} />
               </Flex>
             </Flex>

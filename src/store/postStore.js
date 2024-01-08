@@ -5,7 +5,7 @@ const usePostStore = create((set) => ({
   createPost: (post) => set((state) => ({ post: [post, ...state.posts] })),
   //deletePost
   //addComment
-  //setPosts
+  setPosts: (posts) => set({posts})
 }));
 
 export default usePostStore;

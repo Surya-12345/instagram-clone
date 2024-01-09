@@ -27,6 +27,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { firestore, storage } from "../../firebase/firebase";
 import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import usePostStore from "../../store/postStore";
+import Caption from "../Comment/Caption";
 
 const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -167,6 +168,10 @@ const ProfilePost = ({ post }) => {
                   maxH={"350px"}
                   overflowY={"auto"}
                 >
+                  {/* CAPTION SECTION */}
+                  {post.caption && <Caption post={post} />}
+
+                  {/* COMMENT SECTION */}
                   {post.comments.map((comment) => (
 										<Comment key={comment.id} comment={comment} />
 									))}

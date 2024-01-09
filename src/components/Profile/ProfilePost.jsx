@@ -169,7 +169,7 @@ const ProfilePost = ({ post }) => {
                   overflowY={"auto"}
                 >
                   {/* CAPTION SECTION */}
-                  {post.caption && <Caption post={post} />}
+                  {post.caption && <Caption post={post} key={post.id} />}
 
                   {/* COMMENT SECTION */}
                   {post.comments.map((comment) => (

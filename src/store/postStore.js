@@ -12,7 +12,7 @@ const usePostStore = create((set) => ({
         if (post.id === postId) {
           return {
             ...post,
-            comments: [comment, ...post.comments],
+            comments: [...post.comments, comment],
           };
         }
         return post;
